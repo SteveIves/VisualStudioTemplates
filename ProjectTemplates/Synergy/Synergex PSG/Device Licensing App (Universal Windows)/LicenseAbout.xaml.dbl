@@ -1,0 +1,241 @@
+import $safeprojectname$.Common
+import System
+import System.Collections.Generic
+import System.IO
+import System.Linq
+import System.Runtime.InteropServices.WindowsRuntime
+import System.Threading.Tasks
+import Windows.Foundation
+import Windows.Foundation.Collections
+import Windows.UI.Popups
+import Windows.UI.Xaml
+import Windows.UI.Xaml.Controls
+import Windows.UI.Xaml.Controls.Primitives
+import Windows.UI.Xaml.Data
+import Windows.UI.Xaml.Input
+import Windows.UI.Xaml.Media
+import Windows.UI.Xaml.Navigation
+import Synergex.SynergyDE.DeviceLicensing
+
+.array 0
+
+namespace $safeprojectname$
+
+    public sealed partial class LicenseAbout extends Page
+
+        private static taskCompletionSource, @TaskCompletionSource<boolean>
+        private licenseInfo, @LicenseInfo
+        private navigationHelper, @NavigationHelper
+        private defaultViewModel, @ObservableDictionary, new ObservableDictionary()
+
+        ;;;  <summary>
+        ;;;  This can be changed to a strongly typed view model.
+        ;;;  </summary>
+        public property DefaultViewModel, @ObservableDictionary
+            method get
+            proc
+                mreturn this.defaultViewModel
+            endmethod
+        endproperty
+
+        ;;;  <summary>
+        ;;;  NavigationHelper is used on each page to aid in navigation and
+        ;;;  process lifetime management
+        ;;;  </summary>
+        public property NavigationHelper, @NavigationHelper
+            method get
+            proc
+                mreturn this.navigationHelper
+            endmethod
+        endproperty
+
+        public method LicenseAbout
+            endparams
+        proc
+            taskCompletionSource = new TaskCompletionSource<boolean>()
+            this.InitializeComponent()
+            this.navigationHelper = new NavigationHelper(this)
+            this.navigationHelper.LoadState += navigationHelper_LoadState
+            this.navigationHelper.SaveState += navigationHelper_SaveState
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Populates the page with content passed during navigation. Any saved state is also
+        ;;;  provided when recreating a page from a prior session.
+        ;;;  </summary>
+        ;;;  <param name="sender">
+        ;;;  The source of the event; typically <see cref="NavigationHelper"/>
+        ;;;  </param>
+        ;;;  <param name="e">Event data that provides both the navigation parameter passed to
+        ;;;  <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
+        ;;;  a dictionary of state preserved by this page during an earlier
+        ;;;  session. The state will be null the first time a page is visited.</param>
+        private method navigationHelper_LoadState, void
+            sender, @Object
+            e, @LoadStateEventArgs
+            endparams
+        proc
+
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Preserves state associated with this page in case the application is suspended or the
+        ;;;  page is discarded from the navigation cache.  Values must conform to the serialization
+        ;;;  requirements of <see cref="SuspensionManager.SessionState"/>.
+        ;;;  </summary>
+        ;;;  <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        ;;;  <param name="e">Event data that provides an empty dictionary to be populated with
+        ;;;  serializable state.</param>
+        private method navigationHelper_SaveState, void
+            sender, @Object
+            e, @SaveStateEventArgs
+            endparams
+        proc
+
+        endmethod
+
+.region "NavigationHelper registration"
+
+        ;;;  The methods provided in this section are simply used to allow
+        ;;;  NavigationHelper to respond to the page's navigation methods.
+        ;;;
+        ;;;  Page specific logic should be placed in event handlers.
+        ;;;  The navigation parameter is available in the LoadState method
+        ;;;  in addition to page state preserved during an earlier session.
+        protected override method OnNavigatedTo, void
+            e, @NavigationEventArgs
+            endparams
+        proc
+            navigationHelper.OnNavigatedTo(e)
+            if (Frame.BackStack != ^null)
+            begin
+                data backStack = Frame.BackStack.ToList()
+                data lastPage = ^as(backStack[backStack.Count - 1], PageStackEntry)
+                if (lastPage != ^null && lastPage.SourcePageType.FullName.Contains("LicenseLogin"))
+                    Frame.BackStack.RemoveAt(Frame.BackStack.Count - 1)
+            end
+
+            ShowLicenseInfo()
+        endmethod
+
+        protected override method OnNavigatedFrom, void
+            e, @NavigationEventArgs
+            endparams
+        proc
+            navigationHelper.OnNavigatedFrom(e)
+            taskCompletionSource.SetResult(true)
+        endmethod
+
+.endregion
+
+.region "LicenseSupport"
+
+        ;;;  <summary>
+        ;;;  Display existing license info on dialog fields
+        ;;;  </summary>
+        private async method ShowLicenseInfo, void
+            endparams
+        proc
+            licenseInfo = await Synergex.SynergyDE.DeviceLicensing.DeviceLicensing.GetLicenseInfoAsync()
+            if (licenseInfo != ^null)
+            begin
+                tokenBox.Text = (licenseInfo.Token != ^null ? licenseInfo.Token : "")
+                descriptionBox.Text = (licenseInfo.Description != ^null ? licenseInfo.Description : "")
+                transferBox.Text = licenseInfo.Transferable.ToString()
+                statusBox.Text = licenseInfo.Status.ToString()
+                activatedBox.Text = licenseInfo.Activated.ToString()
+                expireBox.Text = licenseInfo.Expiration.ToString()
+                if (licenseInfo.SubscriptionExpiration == DateTime.MinValue) then
+                    subBox.Text = ""
+                else
+                    subBox.Text = licenseInfo.SubscriptionExpiration.ToString()
+                debugBox.Text = (licenseInfo.DebugInfo != ^null ? licenseInfo.DebugInfo : "")
+            end
+            ;;  if there's no licese info or we're not active then disable sync
+            if ((licenseInfo == ^null) || (licenseInfo.Status != LicenseStatus.Active)) then
+            begin
+                syncBtn.IsEnabled = false
+            end
+            else
+                syncBtn.IsEnabled = true
+            deactivateBtn.IsEnabled = true
+        endmethod
+
+        private async method syncBtn_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+            data result, LicenseError
+            ;;  prevent calling sync multiple times
+            syncBtn.IsEnabled = false
+            result = await LicenseClass.AwaitSync(false, false)
+            syncBtn.IsEnabled = true
+            if (result == LicenseError.None) then
+            begin
+                ShowLicenseInfo()
+                await LicenseUtility.MessageBox("Application synchronized", "License Success")
+            end
+            else
+            begin
+                data msg, string, LicenseUtility.ErrorMessage(result)
+                data li, @LicenseInfo, await DeviceLicensing.GetLicenseInfoAsync()
+                ;data li, @LicenseInfo, new LicenseInfo()
+                if ((li.Status == LicenseStatus.NotActive) || (li.Expiration <= DateTime.Now)) then
+                begin
+                    await LicenseUtility.MessageBox(msg + Environment.NewLine + "Application no longer licensed.", "License Error")
+                    LicenseUtility.ExitApp()
+                end
+                else if (li.Status == LicenseStatus.Grace) then
+                begin
+                    data gmsg, string, "Application is in a grace period and will run until " + li.Expiration.ToString() + Environment.NewLine + "Contact your ISV for help"
+                    await LicenseUtility.MessageBox(msg + "." + Environment.NewLine + gmsg, "License Error")
+                end
+                else
+                begin
+                    if ((result == LicenseError.Connectivity) || (result == LicenseError.Timeout))
+                        await LicenseUtility.MessageBox(msg, "License Error")
+                end
+            end
+        endmethod
+
+        private async method deactivateBtn_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+            data result, LicenseError
+            ;;  prevent calling deactivate multiple times
+            deactivateBtn.IsEnabled = false
+            result = await DeviceLicensing.Deactivate()
+            deactivateBtn.IsEnabled = true
+            if (result == LicenseError.None) then
+            begin
+                await LicenseUtility.MessageBox("Application deactivated", "License Success")
+            end
+            else
+            begin
+                await LicenseUtility.MessageBox(LicenseUtility.ErrorMessage(result), "License Error")
+            end
+            LicenseUtility.ExitApp()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  show the license about screen and wait for completion
+        ;;;  </summary>
+        ;;;  <returns></returns>
+        public static async method ShowLicenseAboutAsync, @Task
+            endparams
+        proc
+            if (App.RootFrame != ^null)
+            begin
+                App.RootFrame.Navigate(^typeof(LicenseAbout))
+                await LicenseAbout.taskCompletionSource.Task
+            end
+        endmethod
+
+.endregion
+    endclass
+
+endnamespace
+

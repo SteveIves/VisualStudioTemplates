@@ -1,0 +1,52 @@
+﻿<Page
+    x:Name="pageRoot"
+    x:Class="$safeprojectname$.LicenseLogin"
+    DataContext="Binding DefaultViewModel, RelativeSource={RelativeSource Self}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:$safeprojectname$"
+    xmlns:common="using:$safeprojectname$.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
+        <x:String x:Key="AppName">My Application</x:String>
+    </Page.Resources>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back button and page title -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="pageTitle" Text="License Login" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+        </Grid>
+        <TextBox Name="userBox" HorizontalAlignment="Left" Margin="380,93,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="405"/>
+        <PasswordBox Name="pwdBox" HorizontalAlignment="Left" Margin="380,154,0,0" Grid.Row="1" VerticalAlignment="Top" Width="405"/>
+        <TextBox x:Name="descBox" HorizontalAlignment="Left" Margin="380,217,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="405"/>
+        <TextBlock HorizontalAlignment="Left" Margin="250,93,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Token" VerticalAlignment="Top" SelectionChanged="TextBlock_SelectionChanged" FontSize="22" RenderTransformOrigin="0.553,-1.379" Height="32"/>
+        <TextBlock HorizontalAlignment="Left" Margin="216,154,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" SelectionChanged="TextBlock_SelectionChanged" FontSize="22" RenderTransformOrigin="0.553,-1.379" Height="32"/>
+        <TextBlock HorizontalAlignment="Left" Margin="123,217,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Device Description" VerticalAlignment="Top" SelectionChanged="TextBlock_SelectionChanged" FontSize="22" RenderTransformOrigin="0.553,-1.379" Height="32" Width="184"/>
+        <Button Name="LoginBtn" Content="Login" HorizontalAlignment="Left" Margin="367,324,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="18" Click="LoginBtn_Click"/>
+        <Button x:Name="ExitBtn" Content="Exit" HorizontalAlignment="Left" Margin="513,324,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="18" Click="ExitBtn_Click"/>
+    </Grid>
+</Page>

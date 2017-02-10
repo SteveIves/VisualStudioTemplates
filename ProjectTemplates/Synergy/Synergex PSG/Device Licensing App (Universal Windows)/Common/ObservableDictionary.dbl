@@ -1,0 +1,210 @@
+import System
+import System.Collections.Generic
+import System.Linq
+import Windows.Foundation.Collections
+
+.array 0
+
+namespace $safeprojectname$.Common
+
+    ;;;  <summary>
+    ;;;  Implementation of IObservableMap that supports reentrancy for use as a default view
+    ;;;  model.
+    ;;;  </summary>
+    public class ObservableDictionary implements IObservableMap<string, object>
+
+        private class ObservableDictionaryChangedEventArgs implements IMapChangedEventArgs<string>
+
+            public method ObservableDictionaryChangedEventArgs
+                change, CollectionChange
+                key, string
+                endparams
+            proc
+                this.CollectionChange = change
+                this.Key = key
+            endmethod
+
+            public property CollectionChange, CollectionChange
+                method get
+                endmethod
+                private method set
+                endmethod
+            endproperty
+
+            public property Key, string
+                method get
+                endmethod
+                private method set
+                endmethod
+            endproperty
+        endclass
+
+        private _dictionary, @Dictionary<string, object>, new Dictionary<string, object>()
+
+        public event MapChanged, @MapChangedEventHandler<string, object>
+
+        private method InvokeMapChanged, void
+            change, CollectionChange
+            tempKey, string
+            endparams
+        proc
+            data eventHandler, @MapChangedEventHandler<string, object>, MapChanged
+            if (eventHandler != ^null)
+            begin
+                ;data tempDictionary, @ObservableDictionaryChangedEventArgs, new ObservableDictionaryChangedEventArgs(change, key)
+                eventHandler(this, new ObservableDictionaryChangedEventArgs(change, tempKey))
+            end
+        endmethod
+
+        public method Add, void
+            key, string
+            value, @Object
+            endparams
+        proc
+            this._dictionary.Add(key, value)
+            this.InvokeMapChanged(CollectionChange.ItemInserted, key)
+        endmethod
+
+        public method Add, void
+            item, KeyValuePair<string, object>
+            endparams
+        proc
+            this.Add(item.Key, item.Value)
+        endmethod
+
+        public method Remove, boolean
+            key, string
+            endparams
+        proc
+            if (this._dictionary.Remove(key))
+            begin
+                this.InvokeMapChanged(CollectionChange.ItemRemoved, key)
+                mreturn true
+            end
+            mreturn false
+        endmethod
+
+        public method Remove, boolean
+            item, KeyValuePair<string, object>
+            endparams
+        proc
+            data currentValue, @Object
+            if ((this._dictionary.TryGetValue(item.Key, currentValue) && Object.Equals(item.Value, currentValue)) && this._dictionary.Remove(item.Key))
+            begin
+                this.InvokeMapChanged(CollectionChange.ItemRemoved, item.Key)
+                mreturn true
+            end
+            mreturn false
+        endmethod
+
+        public property Indexer, @Object
+            key, string
+            method get
+            proc
+                mreturn this._dictionary[key]
+            endmethod
+            method set
+            proc
+                this._dictionary[key] = value
+                this.InvokeMapChanged(CollectionChange.ItemChanged, key)
+            endmethod
+        endproperty
+
+
+        public method Clear, void
+            endparams
+        proc
+
+            data priorKeys = this._dictionary.Keys.ToArray()
+            data key, string
+            foreach key in priorKeys
+            begin
+                this.InvokeMapChanged(CollectionChange.ItemRemoved, key)
+            end
+
+        endmethod
+
+        public property Keys, @ICollection<string>
+            method get
+            proc
+                mreturn this._dictionary.Keys
+            endmethod
+        endproperty
+
+        public method ContainsKey, boolean
+            key, string
+            endparams
+        proc
+            mreturn this._dictionary.ContainsKey(key)
+        endmethod
+
+        public method TryGetValue, boolean
+            key, string
+            out value, @Object
+            endparams
+        proc
+            mreturn this._dictionary.TryGetValue(key, value)
+        endmethod
+
+        public property Values, @ICollection<object>
+            method get
+            proc
+                mreturn this._dictionary.Values
+            endmethod
+        endproperty
+
+        public method Contains, boolean
+            item, KeyValuePair<string, object>
+            endparams
+        proc
+            mreturn this._dictionary.Contains(item)
+        endmethod
+
+        public property Count, int
+            method get
+            proc
+                mreturn this._dictionary.Count
+            endmethod
+        endproperty
+
+        public property IsReadOnly, boolean
+            method get
+            proc
+                mreturn false
+            endmethod
+        endproperty
+
+        public method GetEnumerator, @IEnumerator<KeyValuePair<string, object>>
+            endparams
+        proc
+            mreturn this._dictionary.GetEnumerator()
+        endmethod
+
+        method System.Collections.IEnumerable.GetEnumerator, @System.Collections.IEnumerator
+            endparams
+        proc
+            mreturn this._dictionary.GetEnumerator()
+        endmethod
+
+        public method CopyTo, void
+            array, [#]KeyValuePair<string, object>
+            arrayIndex, int
+            endparams
+        proc
+            data larray, [#]KeyValuePair<string, object> , array
+            data arraySize, int, larray.Length
+            begin
+                data pair, KeyValuePair<string, object>
+                foreach pair in this._dictionary
+                begin
+                    if (arrayIndex >= arraySize)
+                        exitloop
+                    larray[^incr(arrayIndex, true)] = pair
+                end
+            end
+        endmethod
+
+    endclass
+
+endnamespace
+

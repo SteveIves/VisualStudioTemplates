@@ -1,0 +1,62 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Navigation App (Universal Windows)</Name>
+    <Description>A universal windows application that includes a hamburger menu and examples of basic pages and navigation.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>App</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="App.csproj" File="App.csproj" ReplaceParameters="true">
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml.cs">App.xaml.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="AppShell.xaml">AppShell.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="AppShell.xaml.cs">AppShell.xaml.cs</ProjectItem>
+      <Folder Name="Assets" TargetFolderName="Assets">
+        <ProjectItem ReplaceParameters="false" TargetFileName="smalltile-sdk.png">smalltile-sdk.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="splash-sdk.png">splash-sdk.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="squaretile-sdk.png">squaretile-sdk.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="StoreLogo.scale-100.png">StoreLogo.scale-100.png</ProjectItem>
+      </Folder>
+      <Folder Name="Controls" TargetFolderName="Controls">
+        <ProjectItem ReplaceParameters="true" TargetFileName="NavMenuListView.cs">NavMenuListView.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="PageHeader.xaml">PageHeader.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="PageHeader.xaml.cs">PageHeader.xaml.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="NavMenuItem.cs">NavMenuItem.cs</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package.appxmanifest</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="project.json">project.json</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Default.rd.xml">Default.rd.xml</ProjectItem>
+      </Folder>
+      <Folder Name="Styles" TargetFolderName="Styles">
+        <ProjectItem ReplaceParameters="true" TargetFileName="Styles.xaml">Styles.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="TenFootStylesheet.xaml">TenFootStylesheet.xaml</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="SystemInformationHelpers.cs">SystemInformationHelpers.cs</ProjectItem>
+      <Folder Name="Triggers" TargetFolderName="Triggers">
+        <ProjectItem ReplaceParameters="true" TargetFileName="IsTenFootTrigger.cs">IsTenFootTrigger.cs</ProjectItem>
+      </Folder>
+      <Folder Name="Views" TargetFolderName="Views">
+        <ProjectItem ReplaceParameters="true" TargetFileName="BasicPage.xaml">BasicPage.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="BasicPage.xaml.cs">BasicPage.xaml.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="BasicSubPage.xaml">BasicSubPage.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="BasicSubPage.xaml.cs">BasicSubPage.xaml.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="CommandBarPage.xaml">CommandBarPage.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="CommandBarPage.xaml.cs">CommandBarPage.xaml.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="DrillInPage.xaml">DrillInPage.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="DrillInPage.xaml.cs">DrillInPage.xaml.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LandingPage.xaml">LandingPage.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LandingPage.xaml.cs">LandingPage.xaml.cs</ProjectItem>
+      </Folder>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

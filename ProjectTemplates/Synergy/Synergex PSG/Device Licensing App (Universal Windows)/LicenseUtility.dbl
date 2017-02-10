@@ -1,0 +1,173 @@
+import System
+import System.Collections.Generic
+import System.Linq
+import System.Text
+import System.Threading.Tasks
+import Windows.UI.Core
+import Windows.UI.Popups
+import Synergex.SynergyDE.DeviceLicensing
+
+.array 0
+
+namespace $safeprojectname$
+
+    class LicenseUtility
+
+        public enum MBReturnValue
+            Yes
+            No
+            OK
+            Debug
+        endenum
+
+        public enum MBButtons
+            YesNoDebug
+            OKDebug
+            OK
+            Debug
+        endenum
+
+        private static method CommandInvokedHandler, void
+            command, @IUICommand
+            endparams
+        proc
+            if (command.Label == "No") then
+                mbResult = MBReturnValue.No
+            else if (command.Label == "Debug") then
+                mbResult = MBReturnValue.Debug
+            else if (command.Label == "Yes") then
+                mbResult = MBReturnValue.Yes
+            else
+                mbResult = MBReturnValue.OK
+        endmethod
+
+        private static mbResult, MBReturnValue
+
+        ;;;  <summary>
+        ;;;  Show a retry dialog with given message and buttons
+        ;;;  </summary>
+        ;;;  <param name="msg">message to display</param>
+        ;;;  <param name="title">title of dialog</param>
+        ;;;  <param name="buttons">buttons to display</param>
+        ;;;  <returns>retry value</returns>
+        public static async method MessageBox, @Task<MBReturnValue>
+            message, string
+            dialogTitle, string
+            default buttons, MBButtons, MBButtons.OK
+            endparams
+        proc
+            ;TODO This should happen in a UI Dispatcher for message boxes to work from the background thread
+            ;TODO Synergex to update this code later
+            MessageBoxImpl(message, dialogTitle, buttons)
+            mreturn mbResult
+        endmethod
+
+        private static async method MessageBoxImpl, @Task
+            message, string
+            dialogTitle, string
+            buttons, MBButtons
+            endparams
+        proc
+            data messageDialogInstance, @MessageDialog, new MessageDialog(message, dialogTitle)
+            ;;  Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
+            if (buttons == MBButtons.YesNoDebug) then
+            begin
+                messageDialogInstance.Commands.Add(new UICommand("Yes", new UICommandInvokedHandler(CommandInvokedHandler)))
+                messageDialogInstance.Commands.Add(new UICommand("No", new UICommandInvokedHandler(CommandInvokedHandler)))
+                messageDialogInstance.Commands.Add(new UICommand("Debug", new UICommandInvokedHandler(CommandInvokedHandler)))
+            end
+            else if (buttons == MBButtons.OKDebug) then
+            begin
+                messageDialogInstance.Commands.Add(new UICommand("OK", new UICommandInvokedHandler(CommandInvokedHandler)))
+                messageDialogInstance.Commands.Add(new UICommand("Debug", new UICommandInvokedHandler(CommandInvokedHandler)))
+            end
+            else if (buttons == MBButtons.Debug) then
+            begin
+                messageDialogInstance.Commands.Add(new UICommand("Debug", new UICommandInvokedHandler(CommandInvokedHandler)))
+            end
+            else
+            begin
+                messageDialogInstance.Commands.Add(new UICommand("OK", new UICommandInvokedHandler(CommandInvokedHandler)))
+            end
+            ;;  Set the command that will be invoked by default
+            messageDialogInstance.DefaultCommandIndex = 0
+            ;;  Set the command to be invoked when escape is pressed
+            messageDialogInstance.CancelCommandIndex = 0
+            ;;  Show the message dialog
+            await messageDialogInstance.ShowAsync()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  get the corresponding error text for the license error
+        ;;;  </summary>
+        ;;;  <param name="lerr">license error</param>
+        ;;;  <returns></returns>
+        public static method ErrorMessage, string
+            lerr, LicenseError
+            endparams
+        proc
+            using lerr select
+            (LicenseError.Connectivity),
+            begin
+                mreturn "Trouble connecting to license server"
+            end
+            (LicenseError.DeviceMismatch),
+            begin
+                mreturn "License does not match device"
+            end
+            (LicenseError.Expired),
+            begin
+                mreturn "License has expired"
+            end
+            (LicenseError.Revoked),
+            begin
+                mreturn "License has been revoked"
+            end
+            (LicenseError.Unauthorized),
+            begin
+                mreturn "Invalid token or password"
+            end
+            (LicenseError.NoSlots),
+            begin
+                mreturn "No more device license slots available"
+            end
+            (LicenseError.Timeout),
+            begin
+                mreturn "Timeout connecting to license server"
+            end
+            (LicenseError.DuplicateDevice),
+            begin
+                mreturn "Duplicate device description"
+            end
+            (LicenseError.MultipleInit),
+            begin
+                mreturn "Multiple initializations of device"
+            end
+            (LicenseError.InvalidAttribute),
+            begin
+                mreturn "AppGuid or PublicKey in SynergyDeviceLicenseAttribute is invalid"
+            end
+            (LicenseError.NotFound),
+            begin
+                mreturn "Device GUID not found"
+            end
+            (),
+            begin
+                mreturn lerr.ToString()
+            end
+            endusing
+        endmethod
+
+        ;;;  <summary>
+        ;;;  exit the windows store app very ungracefully
+        ;;;  </summary>
+        public static method ExitApp, void
+            endparams
+        proc
+            ;; here is where you add logic to gracefully exit app. for sample i brute forced exit
+            Windows.UI.Xaml.Application.Current.^id("Exit")()
+        endmethod
+
+    endclass
+
+endnamespace

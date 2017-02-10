@@ -1,0 +1,33 @@
+﻿import System
+import System.Collections.Generic
+import System.IO
+import System.Linq
+import System.Runtime.InteropServices.WindowsRuntime
+import Windows.Foundation
+import Windows.Foundation.Collections
+import Windows.UI.Xaml
+import Windows.UI.Xaml.Controls
+import Windows.UI.Xaml.Controls.Primitives
+import Windows.UI.Xaml.Data
+import Windows.UI.Xaml.Input
+import Windows.UI.Xaml.Media
+import Windows.UI.Xaml.Navigation
+import Windows.Storage
+import Windows.Storage.Search
+
+namespace $safeprojectname$
+
+    ;;; <summary>
+    ;;; An empty page that can be used on its own or navigated to within a Frame.
+    ;;; </summary>
+    public sealed partial class MainPage extends Page
+
+        public method MainPage
+            endparams
+        proc
+            this.InitializeComponent()
+        endmethod
+
+    endclass
+
+endnamespace

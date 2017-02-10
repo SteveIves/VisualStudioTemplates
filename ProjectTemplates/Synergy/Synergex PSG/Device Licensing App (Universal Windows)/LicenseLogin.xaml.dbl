@@ -1,0 +1,282 @@
+
+import $safeprojectname$.Common
+import System
+import System.Collections.Generic
+import System.IO
+import System.Linq
+import System.Runtime.InteropServices.WindowsRuntime
+import System.Threading.Tasks
+import Windows.Foundation
+import Windows.Foundation.Collections
+import Windows.UI.Xaml
+import Windows.UI.Xaml.Controls
+import Windows.UI.Xaml.Controls.Primitives
+import Windows.UI.Xaml.Data
+import Windows.UI.Xaml.Input
+import Windows.UI.Xaml.Media
+import Windows.UI.Xaml.Navigation
+import Windows.UI.Popups
+import Windows.Storage
+import Windows.Storage.Search
+import Synergex.SynergyDE.DeviceLicensing
+
+.array 0
+
+namespace $safeprojectname$
+
+    ;;;  <summary>
+    ;;;  A basic page that provides characteristics common to most applications.
+    ;;;  </summary>
+    public sealed partial class LicenseLogin extends Page
+
+        private static taskCompletionSource, @TaskCompletionSource<boolean>
+        private navigationHelper, @NavigationHelper
+        private defaultViewModel, @ObservableDictionary, new ObservableDictionary()
+
+        ;;;  <summary>
+        ;;;  This can be changed to a strongly typed view model.
+        ;;;  </summary>
+        public property DefaultViewModel, @ObservableDictionary
+            method get
+            proc
+                mreturn this.defaultViewModel
+            endmethod
+        endproperty
+
+        ;;;  <summary>
+        ;;;  NavigationHelper is used on each page to aid in navigation and
+        ;;;  process lifetime management
+        ;;;  </summary>
+        public property NavigationHelper, @NavigationHelper
+            method get
+            proc
+                mreturn this.navigationHelper
+            endmethod
+        endproperty
+
+        public method LicenseLogin
+            endparams
+        proc
+            taskCompletionSource = new TaskCompletionSource<boolean>()
+            this.InitializeComponent()
+            this.navigationHelper = new NavigationHelper(this)
+            this.navigationHelper.LoadState += navigationHelper_LoadState
+            this.navigationHelper.SaveState += navigationHelper_SaveState
+            LoadIt()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Populates the page with content passed during navigation. Any saved state is also
+        ;;;  provided when recreating a page from a prior session.
+        ;;;  </summary>
+        ;;;  <param name="sender">
+        ;;;  The source of the event; typically <see cref="NavigationHelper"/>
+        ;;;  </param>
+        ;;;  <param name="e">Event data that provides both the navigation parameter passed to
+        ;;;  <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
+        ;;;  a dictionary of state preserved by this page during an earlier
+        ;;;  session. The state will be null the first time a page is visited.</param>
+        private method navigationHelper_LoadState, void
+            sender, @Object
+            e, @LoadStateEventArgs
+            endparams
+        proc
+
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Preserves state associated with this page in case the application is suspended or the
+        ;;;  page is discarded from the navigation cache.  Values must conform to the serialization
+        ;;;  requirements of <see cref="SuspensionManager.SessionState"/>.
+        ;;;  </summary>
+        ;;;  <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        ;;;  <param name="e">Event data that provides an empty dictionary to be populated with
+        ;;;  serializable state.</param>
+        private method navigationHelper_SaveState, void
+            sender, @Object
+            e, @SaveStateEventArgs
+            endparams
+        proc
+
+        endmethod
+
+.region "NavigationHelper registration"
+
+        ;;;  The methods provided in this section are simply used to allow
+        ;;;  NavigationHelper to respond to the page's navigation methods.
+        ;;;
+        ;;;  Page specific logic should be placed in event handlers.
+        ;;;  The navigation parameter is available in the LoadState method
+        ;;;  in addition to page state preserved during an earlier session.
+        protected override method OnNavigatedTo, void
+            e, @NavigationEventArgs
+            endparams
+        proc
+            navigationHelper.OnNavigatedTo(e)
+        endmethod
+
+        protected override method OnNavigatedFrom, void
+            e, @NavigationEventArgs
+            endparams
+        proc
+            if (e.NavigationMode == NavigationMode.Back)
+            begin
+                ExitPage()
+                return
+            end
+            navigationHelper.OnNavigatedFrom(e)
+        endmethod
+
+.endregion
+
+        private method TextBlock_SelectionChanged, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+
+        endmethod
+
+.region "LicenseSupport"
+
+        ;;;  <summary>
+        ;;;  load the username and description box with previous data
+        ;;;  </summary>
+        private async method LoadIt, void
+            endparams
+        proc
+            data linfo, @LicenseInfo
+            linfo = await DeviceLicensing.GetLicenseInfoAsync()
+            if (linfo != ^null)
+            begin
+                if (linfo.Token == ^null) then
+                begin
+                    userBox.Text = ""
+                end
+                else
+                begin
+                    userBox.Text = linfo.Token
+                end
+
+                if (linfo.Description == ^null) then
+                begin
+                    descBox.Text = ""
+                end
+                else
+                begin
+                    descBox.Text = linfo.Description
+                end
+            end
+        endmethod
+
+        ;;;  <summary>
+        ;;;  show a failing message and exit the page
+        ;;;  </summary>
+        ;;;  <param name="lerr">license error</param>
+        ;;;  <returns></returns>
+        private async method ShowFail, @Task
+            lerr, LicenseError
+            endparams
+        proc
+            data li, @LicenseInfo
+            li =  await DeviceLicensing.GetLicenseInfoAsync()
+            data resultText, string, "failed to license device: " + LicenseUtility.ErrorMessage(lerr)
+            if (li.Status == LicenseStatus.Grace) then
+            begin
+                resultText += Environment.NewLine + "Application is in a grace period that expires " + li.Expiration.ToString() + Environment.NewLine + "Please contact your ISV for assistance"
+            end
+            else if (li.Status == LicenseStatus.NotActive)
+            begin
+                resultText += Environment.NewLine + "License is not active and application will be shut down."
+            end
+            await LicenseUtility.MessageBox(resultText, "License Error")
+            ExitPage()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  show the page and wait for completion
+        ;;;  </summary>
+        ;;;  <returns></returns>
+        public static async method ShowLicenseLoginAsync, @Task
+            endparams
+        proc
+            lambda uiNavigate()
+            begin
+                if ((Frame)Window.Current.Content != ^null)
+                begin
+                    ((Frame)Window.Current.Content).Navigate(^typeof(LicenseLogin))
+                end
+            end
+
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, uiNavigate)
+            await LicenseLogin.taskCompletionSource.Task
+        endmethod
+
+.endregion
+
+        private logintry, int
+
+        private method ExitPage, void
+            endparams
+        proc
+            logintry = 0
+            this.Visibility = Visibility.Collapsed
+            this.Frame.Navigate(^typeof(MainPage))
+            taskCompletionSource.SetResult(true)
+        endmethod
+
+        private async method LoginBtn_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+            data result, LicenseError
+            ^incr(logintry, true)
+            data username, string, userBox.Text
+            data password, string, pwdBox.Password
+            data description, string, descBox.Text
+            result = await DeviceLicensing.Activate(username, password, description)
+            if (result != Synergex.SynergyDE.DeviceLicensing.LicenseError.None) then
+            begin
+                if (logintry < 3) then
+                begin
+                    data linfo, @LicenseInfo, await DeviceLicensing.GetLicenseInfoAsync()
+                    ;data linfo = new LicenseInfo()
+                    if (result == Synergex.SynergyDE.DeviceLicensing.LicenseError.NotFound) then
+                    begin
+                        data msg, string, LicenseUtility.ErrorMessage(result) + ". Please deactivate the device."
+                        data mbr, LicenseUtility.MBReturnValue, await LicenseUtility.MessageBox(msg, "License Error", LicenseUtility.MBButtons.Debug)
+                    end
+                    else if ((linfo.Status == LicenseStatus.NotActive) || ((result == Synergex.SynergyDE.DeviceLicensing.LicenseError.Unauthorized) || (result == Synergex.SynergyDE.DeviceLicensing.LicenseError.DuplicateDevice))) then
+                    begin
+                        data msg, string, LicenseUtility.ErrorMessage(result) + ". Try again?"
+                        data mbr, LicenseUtility.MBReturnValue, await LicenseUtility.MessageBox(msg, "License Error", LicenseUtility.MBButtons.YesNoDebug)
+                        if (mbr == LicenseUtility.MBReturnValue.No) then
+                            await ShowFail(result)
+                        else if (mbr == LicenseUtility.MBReturnValue.Debug)
+                            await LicenseAbout.ShowLicenseAboutAsync()
+                    end
+                    else
+                        await ShowFail(result)
+                end
+                else
+                    await ShowFail(result)
+            end
+            else
+            begin
+                await LicenseAbout.ShowLicenseAboutAsync()
+            end
+        endmethod
+
+        private method ExitBtn_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+            LicenseUtility.ExitApp()
+        endmethod
+
+    endclass
+
+endnamespace
+

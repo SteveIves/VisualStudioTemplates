@@ -1,0 +1,102 @@
+import System
+import System.Collections.Generic
+import System.Linq
+import System.Text
+import System.Threading.Tasks
+import System.Windows.Input
+
+.array 0
+
+namespace $safeprojectname$.Common
+
+    ;;;  <summary>
+    ;;;  A command whose sole purpose is to relay its functionality 
+    ;;;  to other objects by invoking delegates. 
+    ;;;  The default return value for the CanExecute method is 'true'.
+    ;;;  <see cref="RaiseCanExecuteChanged"/> needs to be called whenever
+    ;;;  <see cref="CanExecute"/> is expected to return a different value.
+    ;;;  </summary>
+    public class RelayCommand implements ICommand
+
+        private readonly _execute, @Action
+        private readonly _canExecute, @Func<boolean>
+
+        ;;;  <summary>
+        ;;;  Raised when RaiseCanExecuteChanged is called.
+        ;;;  </summary>
+        public event CanExecuteChanged, @EventHandler
+
+        ;;;  <summary>
+        ;;;  Creates a new command that can always execute.
+        ;;;  </summary>
+        ;;;  <param name="execute">The execution logic.</param>
+        public method RelayCommand
+            execute, @Action 
+            endparams
+            this(execute, ^null)
+        proc
+
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Creates a new command.
+        ;;;  </summary>
+        ;;;  <param name="execute">The execution logic.</param>
+        ;;;  <param name="canExecute">The execution status logic.</param>
+        public method RelayCommand
+            execute, @Action 
+            canExecute, @Func<boolean> 
+            endparams
+        proc
+            if (execute == ^null)
+                throw new ArgumentNullException("execute")
+            _execute = execute
+            _canExecute = canExecute
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Determines whether this <see cref="RelayCommand"/> can execute in its current state.
+        ;;;  </summary>
+        ;;;  <param name="parameter">
+        ;;;  Data used by the command. If the command does not require data to be passed, this object can be set to null.
+        ;;;  </param>
+        ;;;  <returns>true if this command can be executed; otherwise, false.</returns>
+        public method CanExecute, boolean
+            parameter, @Object 
+            endparams
+        proc
+            mreturn _canExecute == ^null ? true : _canExecute()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Executes the <see cref="RelayCommand"/> on the current command target.
+        ;;;  </summary>
+        ;;;  <param name="parameter">
+        ;;;  Data used by the command. If the command does not require data to be passed, this object can be set to null.
+        ;;;  </param>
+        public method Execute, void
+            parameter, @Object 
+            endparams
+        proc
+            _execute()
+        endmethod
+
+        ;;;  <summary>
+        ;;;  Method used to raise the <see cref="CanExecuteChanged"/> event
+        ;;;  to indicate that the return value of the <see cref="CanExecute"/>
+        ;;;  method has changed.
+        ;;;  </summary>
+        public method RaiseCanExecuteChanged, void
+            endparams
+        proc
+            data handler = CanExecuteChanged
+            if (handler != ^null)
+            begin
+                handler(this, EventArgs.Empty)
+            end
+        endmethod
+
+    endclass
+
+endnamespace
+

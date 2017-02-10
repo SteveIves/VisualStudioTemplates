@@ -1,0 +1,117 @@
+
+import System
+import System.Collections.Generic
+import System.Diagnostics
+import System.Linq
+import System.Text
+import System.Threading.Tasks
+import System.Windows
+import Synergex.SynergyDE.DeviceLicensing
+import $safeprojectname$.Common
+
+.array 0
+
+;; TODO: Add your public key and appguid to attribute below
+{assembly: SynergyDeviceLicense(PublicKey = "", AppGUID = "", Class = ^typeof(LicenseClass))}
+namespace $safeprojectname$
+
+    class LicenseClass implements ISynergyDeviceCallback
+
+        public async method Init, @Task
+            endparams
+        proc
+            data lerr, LicenseError, await DeviceLicensing.GetDeviceGUID()
+            if (lerr != LicenseError.None)
+                await LicenseUtility.MessageBox("Failed getting device guid: " + LicenseUtility.ErrorMessage(lerr), "License Error")
+        endmethod
+
+        public async method ActivationDialog, @Task
+            endparams
+        proc
+            await LicenseLogin.ShowLicenseLoginAsync()
+        endmethod
+
+        private const MAX_RETRY, int, 3
+
+        public static async method AwaitSync, @Task<LicenseError>
+            blocking, boolean
+            reshowdebug, boolean
+            endparams
+        proc
+            data result, LicenseError, LicenseError.None
+            data retry, int, 0
+            data reauth, boolean, false
+            while (retry < MAX_RETRY) do
+            begin
+                ^incr(retry, true)
+                result = await DeviceLicensing.Synchronize(reauth)
+                if (result == LicenseError.None) then
+                begin
+                    retry = MAX_RETRY
+                end
+                else if ((retry < MAX_RETRY) && ((result == LicenseError.Connectivity) || (result == LicenseError.Timeout))) then
+                begin
+                    if (!blocking) then
+                    begin
+                        retry = MAX_RETRY
+                    end
+                    ;;  when not blocking skip out on connectivity and timeout errors
+                    else
+                    begin
+                        data msg, string, "Failed while synchronizing license: " + LicenseUtility.ErrorMessage(result) + ". Try again?"
+                        data mbr, LicenseUtility.MBReturnValue, await LicenseUtility.MessageBox(msg, "License Error", LicenseUtility.MBButtons.YesNoDebug)
+                        if (mbr == LicenseUtility.MBReturnValue.No) then
+                        begin
+                            retry = MAX_RETRY
+                        end
+                        ;; dont retry
+                        else if (reshowdebug && (mbr == LicenseUtility.MBReturnValue.Debug))
+                        begin
+                            await LicenseAbout.ShowLicenseAboutAsync()
+                        end
+                    end
+                end
+                else
+                begin
+                    data msg, string, "Failed while synchronizing license: " + LicenseUtility.ErrorMessage(result)
+                    data mb, LicenseUtility.MBButtons, LicenseUtility.MBButtons.OK
+                    if (result == LicenseError.NotFound)
+                    begin
+                        mb = (blocking ? LicenseUtility.MBButtons.Debug : LicenseUtility.MBButtons.OKDebug)
+                        msg += Environment.NewLine + "Please deactivate the device."
+                    end
+                    data mbr, LicenseUtility.MBReturnValue, await LicenseUtility.MessageBox(msg, "License Error", mb)
+                    if ((result == LicenseError.DeviceMismatch) && (reauth == false)) then
+                    begin
+                        reauth = true
+                    end
+                    ;;  auto reauth when device mismatch
+                    else
+                    begin
+                        retry = MAX_RETRY
+                        ;; dont retry
+                        if (reshowdebug && (mbr == LicenseUtility.MBReturnValue.Debug))
+                        begin
+                            await LicenseAbout.ShowLicenseAboutAsync()
+                        end
+                    end
+                end
+            end
+            mreturn result
+        endmethod
+
+        public async method Synchronize, @Task
+            blocking, boolean
+            endparams
+        proc
+            if (!blocking) then
+                AwaitSync(false, true)
+            ;;  dont await since non-blocking
+            else
+                await AwaitSync(true, true)
+        endmethod
+
+    endclass
+
+endnamespace
+

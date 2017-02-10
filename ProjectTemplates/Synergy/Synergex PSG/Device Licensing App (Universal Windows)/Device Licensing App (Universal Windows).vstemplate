@@ -1,0 +1,51 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Device Licensing App (Universal Windows)</Name>
+    <Description>A project for a Universal Windows Platform app that has basic navigation features and a reference immplementation of Synergy Device Licensing.</Description>
+    <ProjectType>Synergy</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>App</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="App.synproj" File="App.synproj" ReplaceParameters="true">
+      <Folder Name="Assets" TargetFolderName="Assets">
+        <ProjectItem ReplaceParameters="false" TargetFileName="LockScreenLogo.scale-200.png">LockScreenLogo.scale-200.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="SplashScreen.scale-200.png">SplashScreen.scale-200.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="Square150x150Logo.scale-200.png">Square150x150Logo.scale-200.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="Square44x44Logo.scale-200.png">Square44x44Logo.scale-200.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="Square44x44Logo.targetsize-24_altform-unplated.png">Square44x44Logo.targetsize-24_altform-unplated.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="StoreLogo.png">StoreLogo.png</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="Wide310x150Logo.scale-200.png">Wide310x150Logo.scale-200.png</ProjectItem>
+      </Folder>
+      <Folder Name="Common" TargetFolderName="Common">
+        <ProjectItem ReplaceParameters="true" TargetFileName="NavigationHelper.dbl">NavigationHelper.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="ObservableDictionary.dbl">ObservableDictionary.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="RelayCommand.dbl">RelayCommand.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="SuspensionManager.dbl">SuspensionManager.dbl</ProjectItem>
+      </Folder>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.dbl">AssemblyInfo.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Default.rd.xml">Default.rd.xml</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml.dbl">App.xaml.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml">LicenseAbout.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml.dbl">LicenseAbout.xaml.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseClass.dbl">LicenseClass.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml">LicenseLogin.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml.dbl">LicenseLogin.xaml.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseUtility.dbl">LicenseUtility.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="MainPage.xaml">MainPage.xaml</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="MainPage.xaml.dbl">MainPage.xaml.dbl</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package.appxmanifest</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="project.json">project.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

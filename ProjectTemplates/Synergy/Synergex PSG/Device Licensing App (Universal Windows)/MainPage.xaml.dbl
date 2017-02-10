@@ -1,0 +1,68 @@
+﻿import System
+import System.Collections.Generic
+import System.IO
+import System.Linq
+import System.Runtime.InteropServices.WindowsRuntime
+import Windows.Foundation
+import Windows.Foundation.Collections
+import Windows.UI.Xaml
+import Windows.UI.Xaml.Controls
+import Windows.UI.Xaml.Controls.Primitives
+import Windows.UI.Xaml.Data
+import Windows.UI.Xaml.Input
+import Windows.UI.Xaml.Media
+import Windows.UI.Xaml.Navigation
+import Windows.Storage
+import Windows.Storage.Search
+import $safeprojectname$.Common
+
+namespace $safeprojectname$
+
+    ;;; <summary>
+    ;;; An empty page that can be used on its own or navigated to within a Frame.
+    ;;; </summary>
+    public sealed partial class MainPage extends Page
+
+        public method MainPage
+            endparams
+        proc
+            this.InitializeComponent()
+            this.NavigationHelper = new NavigationHelper(this)
+
+            ; Force licensing to occur
+            Synergex.SynergyDE.SysRoutines.dscrdeviceinit()
+        endmethod
+
+        public property NavigationHelper, @NavigationHelper
+            method get
+            endmethod
+            method set
+            endmethod
+        endproperty
+
+        public static uiDispatcher, @Windows.UI.Core.CoreDispatcher
+
+        protected override method OnNavigatedTo, void
+            e, @NavigationEventArgs
+        proc
+            uiDispatcher = this.Dispatcher
+            navigationHelper.OnNavigatedTo(e)
+        endmethod
+
+        protected override method OnNavigatedFrom, void
+            e, @NavigationEventArgs
+        proc
+            navigationHelper.OnNavigatedFrom(e)
+        endmethod
+
+        public method button_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+            this.Frame.Navigate(^typeof(LicenseAbout))
+        endmethod
+
+    endclass
+
+endnamespace
