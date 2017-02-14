@@ -55,7 +55,7 @@ namespace $safeprojectname$
             navigationHelper.OnNavigatedFrom(e)
         endmethod
 
-        public method button_Click, void
+        public method btnShowLicenseInfo_Click, void
             sender, @Object
             e, @RoutedEventArgs
             endparams

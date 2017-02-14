@@ -34,6 +34,9 @@
         <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.dbl">AssemblyInfo.dbl</ProjectItem>
         <ProjectItem ReplaceParameters="true" TargetFileName="Default.rd.xml">Default.rd.xml</ProjectItem>
       </Folder>
+      <Folder Name="Styles" TargetFolderName="Styles">
+        <ProjectItem ReplaceParameters="true" TargetFileName="Styles.xaml">Styles.xaml</ProjectItem>
+      </Folder>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml.dbl">App.xaml.dbl</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml">LicenseAbout.xaml</ProjectItem>

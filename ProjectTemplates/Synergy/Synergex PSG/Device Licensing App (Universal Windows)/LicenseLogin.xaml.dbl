@@ -33,6 +33,24 @@ namespace $safeprojectname$
         private navigationHelper, @NavigationHelper
         private defaultViewModel, @ObservableDictionary, new ObservableDictionary()
 
+        ;;; <summary>
+        ;;; Constructor
+        ;;; </summary>
+        public method LicenseLogin
+            endparams
+        proc
+            taskCompletionSource = new TaskCompletionSource<boolean>()
+
+            this.InitializeComponent()
+
+            this.navigationHelper = new NavigationHelper(this)
+            this.navigationHelper.LoadState += navigationHelper_LoadState
+            this.navigationHelper.SaveState += navigationHelper_SaveState
+
+            loadPreviousUserData()
+
+        endmethod
+
         ;;;  <summary>
         ;;;  This can be changed to a strongly typed view model.
         ;;;  </summary>
@@ -53,17 +71,6 @@ namespace $safeprojectname$
                 mreturn this.navigationHelper
             endmethod
         endproperty
-
-        public method LicenseLogin
-            endparams
-        proc
-            taskCompletionSource = new TaskCompletionSource<boolean>()
-            this.InitializeComponent()
-            this.navigationHelper = new NavigationHelper(this)
-            this.navigationHelper.LoadState += navigationHelper_LoadState
-            this.navigationHelper.SaveState += navigationHelper_SaveState
-            LoadIt()
-        endmethod
 
         ;;;  <summary>
         ;;;  Populates the page with content passed during navigation. Any saved state is also
@@ -129,68 +136,50 @@ namespace $safeprojectname$
 
 .endregion
 
-        private method TextBlock_SelectionChanged, void
-            sender, @Object
-            e, @RoutedEventArgs
-            endparams
-        proc
-
-        endmethod
-
 .region "LicenseSupport"
 
         ;;;  <summary>
-        ;;;  load the username and description box with previous data
+        ;;;  Load the username and description box with previous data
         ;;;  </summary>
-        private async method LoadIt, void
+        private async method loadPreviousUserData, void
             endparams
         proc
             data linfo, @LicenseInfo
             linfo = await DeviceLicensing.GetLicenseInfoAsync()
             if (linfo != ^null)
             begin
-                if (linfo.Token == ^null) then
-                begin
-                    userBox.Text = ""
-                end
-                else
-                begin
-                    userBox.Text = linfo.Token
-                end
-
-                if (linfo.Description == ^null) then
-                begin
-                    descBox.Text = ""
-                end
-                else
-                begin
-                    descBox.Text = linfo.Description
-                end
+                txtUsername.Text = (linfo.Token != ^null) ? linfo.Token : ""
+                txtDescription.Text = (linfo.Description != ^null) ? linfo.Description : ""
             end
         endmethod
 
         ;;;  <summary>
-        ;;;  show a failing message and exit the page
+        ;;;  Show a licensing failure message and exit the page
         ;;;  </summary>
-        ;;;  <param name="lerr">license error</param>
+        ;;;  <param name="err">license error</param>
         ;;;  <returns></returns>
         private async method ShowFail, @Task
-            lerr, LicenseError
+            err, LicenseError
             endparams
         proc
             data li, @LicenseInfo
             li =  await DeviceLicensing.GetLicenseInfoAsync()
-            data resultText, string, "failed to license device: " + LicenseUtility.ErrorMessage(lerr)
-            if (li.Status == LicenseStatus.Grace) then
-            begin
-                resultText += Environment.NewLine + "Application is in a grace period that expires " + li.Expiration.ToString() + Environment.NewLine + "Please contact your ISV for assistance"
-            end
-            else if (li.Status == LicenseStatus.NotActive)
-            begin
-                resultText += Environment.NewLine + "License is not active and application will be shut down."
-            end
-            await LicenseUtility.MessageBox(resultText, "License Error")
+
+            data message = String.Format("Failed to license device: {0}",LicenseUtility.ErrorMessage(err))
+
+            using li.Status select
+            (LicenseStatus.Active),
+                nop
+            (LicenseStatus.Grace),
+                message = String.Format("{0}.{1}Your license is currently in a grace period that expires {2}.{3}Please contact the software vendor for assistance.",message,Environment.NewLine,li.Expiration.ToString(),Environment.NewLine)
+            (LicenseStatus.NotActive),
+                message = String.Format("{0}.{1}Your license is not active. The application will close.",message,Environment.NewLine)
+            endusing
+
+            await LicenseUtility.MessageBox(message, "License Error")
+
             ExitPage()
+
         endmethod
 
         ;;;  <summary>
@@ -232,9 +221,9 @@ namespace $safeprojectname$
         proc
             data result, LicenseError
             ^incr(logintry, true)
-            data username, string, userBox.Text
-            data password, string, pwdBox.Password
-            data description, string, descBox.Text
+            data username, string, txtUsername.Text
+            data password, string, txtPassword.Password
+            data description, string, txtDescription.Text
             result = await DeviceLicensing.Activate(username, password, description)
             if (result != Synergex.SynergyDE.DeviceLicensing.LicenseError.None) then
             begin
@@ -279,4 +268,3 @@ namespace $safeprojectname$
     endclass
 
 endnamespace
-

@@ -1,4 +1,4 @@
-import $safeprojectname$.Common
+
 import System
 import System.Collections.Generic
 import System.IO
@@ -15,7 +15,10 @@ import Windows.UI.Xaml.Data
 import Windows.UI.Xaml.Input
 import Windows.UI.Xaml.Media
 import Windows.UI.Xaml.Navigation
+import Windows.ApplicationModel.DataTransfer
+
 import Synergex.SynergyDE.DeviceLicensing
+import $safeprojectname$.Common
 
 .array 0
 
@@ -24,7 +27,7 @@ namespace $safeprojectname$
     public sealed partial class LicenseAbout extends Page
 
         private static taskCompletionSource, @TaskCompletionSource<boolean>
-        private licenseInfo, @LicenseInfo
+        private licenseData, @LicenseInfo
         private navigationHelper, @NavigationHelper
         private defaultViewModel, @ObservableDictionary, new ObservableDictionary()
 
@@ -136,41 +139,40 @@ namespace $safeprojectname$
         private async method ShowLicenseInfo, void
             endparams
         proc
-            licenseInfo = await Synergex.SynergyDE.DeviceLicensing.DeviceLicensing.GetLicenseInfoAsync()
-            if (licenseInfo != ^null)
+            licenseData = await DeviceLicensing.GetlicenseInfoAsync()
+            if (licenseData != ^null)
             begin
-                tokenBox.Text = (licenseInfo.Token != ^null ? licenseInfo.Token : "")
-                descriptionBox.Text = (licenseInfo.Description != ^null ? licenseInfo.Description : "")
-                transferBox.Text = licenseInfo.Transferable.ToString()
-                statusBox.Text = licenseInfo.Status.ToString()
-                activatedBox.Text = licenseInfo.Activated.ToString()
-                expireBox.Text = licenseInfo.Expiration.ToString()
-                if (licenseInfo.SubscriptionExpiration == DateTime.MinValue) then
+                tokenBox.Text = (licenseData.Token != ^null ? licenseData.Token : "")
+                descriptionBox.Text = (licenseData.Description != ^null ? licenseData.Description : "")
+                chkTransferrable.IsChecked = licenseData.Transferable
+                statusBox.Text = licenseData.Status.ToString()
+                activatedBox.Text = licenseData.Activated.ToString()
+                expireBox.Text = licenseData.Expiration.ToString()
+                if (licenseData.SubscriptionExpiration == DateTime.MinValue) then
                     subBox.Text = ""
                 else
-                    subBox.Text = licenseInfo.SubscriptionExpiration.ToString()
-                debugBox.Text = (licenseInfo.DebugInfo != ^null ? licenseInfo.DebugInfo : "")
+                    subBox.Text = licenseData.SubscriptionExpiration.ToString()
             end
             ;;  if there's no licese info or we're not active then disable sync
-            if ((licenseInfo == ^null) || (licenseInfo.Status != LicenseStatus.Active)) then
+            if ((licenseData == ^null) || (licenseData.Status != LicenseStatus.Active)) then
             begin
-                syncBtn.IsEnabled = false
+                btnSynchronize.IsEnabled = false
             end
             else
-                syncBtn.IsEnabled = true
-            deactivateBtn.IsEnabled = true
+                btnSynchronize.IsEnabled = true
+            btnDeactivate.IsEnabled = true
         endmethod
 
-        private async method syncBtn_Click, void
+        private async method btnSynchronize_Click, void
             sender, @Object
             e, @RoutedEventArgs
             endparams
         proc
             data result, LicenseError
             ;;  prevent calling sync multiple times
-            syncBtn.IsEnabled = false
+            btnSynchronize.IsEnabled = false
             result = await LicenseClass.AwaitSync(false, false)
-            syncBtn.IsEnabled = true
+            btnSynchronize.IsEnabled = true
             if (result == LicenseError.None) then
             begin
                 ShowLicenseInfo()
@@ -199,16 +201,16 @@ namespace $safeprojectname$
             end
         endmethod
 
-        private async method deactivateBtn_Click, void
+        private async method btnDeactivate_Click, void
             sender, @Object
             e, @RoutedEventArgs
             endparams
         proc
             data result, LicenseError
             ;;  prevent calling deactivate multiple times
-            deactivateBtn.IsEnabled = false
+            btnDeactivate.IsEnabled = false
             result = await DeviceLicensing.Deactivate()
-            deactivateBtn.IsEnabled = true
+            btnDeactivate.IsEnabled = true
             if (result == LicenseError.None) then
             begin
                 await LicenseUtility.MessageBox("Application deactivated", "License Success")
@@ -218,6 +220,38 @@ namespace $safeprojectname$
                 await LicenseUtility.MessageBox(LicenseUtility.ErrorMessage(result), "License Error")
             end
             LicenseUtility.ExitApp()
+        endmethod
+
+        private async method btnCopyDebugData_Click, void
+            sender, @Object
+            e, @RoutedEventArgs
+            endparams
+        proc
+
+            data msg = "Device Licensing Information" + Environment.NewLine + Environment.NewLine
+
+            if (licenseData == ^null) then
+            begin
+                msg += "No license data was available!"
+            end
+            else
+            begin
+                msg += "User token: " + (licenseData.Token != ^null ? licenseData.Token : "") + Environment.NewLine
+                msg += "Description: " + (licenseData.Description != ^null ? licenseData.Description : "") + Environment.NewLine
+                msg += "Transferrable: " + licenseData.Transferable.ToString() + Environment.NewLine
+                msg += "License status: " + licenseData.Status.ToString() + Environment.NewLine
+                msg += "License activated: " + licenseData.Activated.ToString() + Environment.NewLine
+                msg += "License expires: " + licenseData.Expiration.ToString() + Environment.NewLine
+                msg += "Subscription expires: " + (licenseData.SubscriptionExpiration == DateTime.MinValue ? "None" : licenseData.SubscriptionExpiration.ToString()) + Environment.NewLine
+                msg += "Debug data: " + (licenseData.DebugInfo != ^null ? licenseData.DebugInfo : "") + Environment.NewLine
+            end
+
+            data pkg = new DataPackage()
+            pkg.SetText(msg)
+            Clipboard.SetContent(pkg)
+
+            await LicenseUtility.MessageBox("Device licensing debug data was copied to the clipboard.","License Debug Data",LicenseUtility.MBButtons.OK)
+
         endmethod
 
         ;;;  <summary>

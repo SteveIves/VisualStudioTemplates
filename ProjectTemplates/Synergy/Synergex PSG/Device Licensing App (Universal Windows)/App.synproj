@@ -17,7 +17,8 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
-    <PackageCertificateKeyFile></PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <DBL_qWarnLevel>3 - Don't display warning levels higher than 3</DBL_qWarnLevel>
     <DBL_qWarn>True</DBL_qWarn>
     <DBLCmdOptions> -W3 -qstack -device</DBLCmdOptions>
@@ -50,6 +51,8 @@
     <Prefer32Bit>true</Prefer32Bit>
     <TargetRuntimeLevel>10030300</TargetRuntimeLevel>
     <LanguageCompatibilityLevel>10030300</LanguageCompatibilityLevel>
+    <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
+    <UseEmulator>True</UseEmulator>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <OutputPath>bin\ARM\Release\</OutputPath>
@@ -104,6 +107,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <TargetRuntimeLevel>10030300</TargetRuntimeLevel>
     <LanguageCompatibilityLevel>10030300</LanguageCompatibilityLevel>
+    <DeviceId>617134C4-B2DB-4193-AEFD-66AC4322C107</DeviceId>
+    <UseEmulator>False</UseEmulator>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -176,10 +181,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Common" />
+    <Folder Include="Styles" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

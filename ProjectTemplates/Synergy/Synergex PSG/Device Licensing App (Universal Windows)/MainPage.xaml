@@ -8,8 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Button x:Name="button" Content="About Device Licensing"
-                Margin="12,12,12,12" VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                Click="button_Click"/>
+        <Button Content="About Device Licensing" Margin="12,12,12,12"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                Click="btnShowLicenseInfo_Click"/>
     </Grid>
 </Page>
