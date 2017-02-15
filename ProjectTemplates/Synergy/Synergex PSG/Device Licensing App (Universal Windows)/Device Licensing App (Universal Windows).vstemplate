@@ -51,7 +51,7 @@
       <ProjectItem ReplaceParameters="true" TargetFileName="MainPage.xaml.dbl">MainPage.xaml.dbl</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package.appxmanifest</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="project.json">project.json</ProjectItem>
-      <ProjectItem ReplaceParameters="false" OpenInEditor="true" TargetFileName="README.TXT">README.TXT</ProjectItem>
+      <ProjectItem ReplaceParameters="false" OpenInWebBrowser="true" ItemType="None" TargetFileName="README.HTM">README.HTM</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

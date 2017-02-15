@@ -181,7 +181,7 @@
             <F N="Device Licensing App (Universal Windows)/MainPage.xaml"/>
             <F N="Device Licensing App (Universal Windows)/Package.appxmanifest"/>
             <F N="Device Licensing App (Universal Windows)/project.json"/>
-            <F N="Device Licensing App (Universal Windows)/README.TXT"/>
+            <F N="Device Licensing App (Universal Windows)/README.HTM"/>
             <F N="Device Licensing App (Universal Windows)/Styles/Styles.xaml"/>
         </Folder>
     </Files>
