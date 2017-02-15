@@ -30,6 +30,14 @@
         <ProjectItem ReplaceParameters="true" TargetFileName="RelayCommand.dbl">RelayCommand.dbl</ProjectItem>
         <ProjectItem ReplaceParameters="true" TargetFileName="SuspensionManager.dbl">SuspensionManager.dbl</ProjectItem>
       </Folder>
+      <Folder Name="DeviceLicensing" TargetFolderName="DeviceLicensing">
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml">LicenseAbout.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml.dbl">LicenseAbout.xaml.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseClass.dbl">LicenseClass.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml">LicenseLogin.xaml</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml.dbl">LicenseLogin.xaml.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="LicenseUtility.dbl">LicenseUtility.dbl</ProjectItem>
+      </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.dbl">AssemblyInfo.dbl</ProjectItem>
         <ProjectItem ReplaceParameters="true" TargetFileName="Default.rd.xml">Default.rd.xml</ProjectItem>
@@ -39,16 +47,11 @@
       </Folder>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml">App.xaml</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="App.xaml.dbl">App.xaml.dbl</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml">LicenseAbout.xaml</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseAbout.xaml.dbl">LicenseAbout.xaml.dbl</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseClass.dbl">LicenseClass.dbl</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml">LicenseLogin.xaml</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseLogin.xaml.dbl">LicenseLogin.xaml.dbl</ProjectItem>
-      <ProjectItem ReplaceParameters="true" TargetFileName="LicenseUtility.dbl">LicenseUtility.dbl</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="MainPage.xaml">MainPage.xaml</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="MainPage.xaml.dbl">MainPage.xaml.dbl</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package.appxmanifest</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="project.json">project.json</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="README.TXT">README.TXT</ProjectItem>
     </Project>
   </TemplateContent>
 </VSTemplate>

@@ -136,14 +136,14 @@
     <Compile Include="Common\ObservableDictionary.dbl" />
     <Compile Include="Common\RelayCommand.dbl" />
     <Compile Include="Common\SuspensionManager.dbl" />
-    <Compile Include="LicenseAbout.xaml.dbl">
-      <DependentUpon>LicenseAbout.xaml</DependentUpon>
+    <Compile Include="DeviceLicensing\LicenseAbout.xaml.dbl">
+      <DependentUpon>DeviceLicensing\LicenseAbout.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LicenseClass.dbl" />
-    <Compile Include="LicenseLogin.xaml.dbl">
-      <DependentUpon>LicenseLogin.xaml</DependentUpon>
+    <Compile Include="DeviceLicensing\LicenseClass.dbl" />
+    <Compile Include="DeviceLicensing\LicenseLogin.xaml.dbl">
+      <DependentUpon>DeviceLicensing\LicenseLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LicenseUtility.dbl" />
+    <Compile Include="DeviceLicensing\LicenseUtility.dbl" />
     <Compile Include="MainPage.xaml.dbl">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -163,17 +163,20 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="README.TXT">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="LicenseAbout.xaml">
+    <Page Include="DeviceLicensing\LicenseAbout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LicenseLogin.xaml">
+    <Page Include="DeviceLicensing\LicenseLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -189,6 +192,7 @@
   <ItemGroup>
     <Folder Include="Assets\" />
     <Folder Include="Common" />
+    <Folder Include="DeviceLicensing" />
     <Folder Include="Styles" />
     <Folder Include="Properties\" />
   </ItemGroup>

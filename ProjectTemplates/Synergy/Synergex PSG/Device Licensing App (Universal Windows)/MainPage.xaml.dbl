@@ -15,6 +15,7 @@ import Windows.UI.Xaml.Navigation
 import Windows.Storage
 import Windows.Storage.Search
 import $safeprojectname$.Common
+import $safeprojectname$.DeviceLicensing
 
 namespace $safeprojectname$
 

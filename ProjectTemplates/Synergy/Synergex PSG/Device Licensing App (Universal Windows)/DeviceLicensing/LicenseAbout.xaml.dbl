@@ -22,7 +22,7 @@ import $safeprojectname$.Common
 
 .array 0
 
-namespace $safeprojectname$
+namespace $safeprojectname$.DeviceLicensing
 
     public sealed partial class LicenseAbout extends Page
 

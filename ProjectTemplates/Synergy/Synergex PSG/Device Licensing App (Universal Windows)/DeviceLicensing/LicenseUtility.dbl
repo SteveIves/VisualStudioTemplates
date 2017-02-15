@@ -9,7 +9,7 @@ import Synergex.SynergyDE.DeviceLicensing
 
 .array 0
 
-namespace $safeprojectname$
+namespace $safeprojectname$.DeviceLicensing
 
     class LicenseUtility
 

@@ -13,7 +13,7 @@ import $safeprojectname$.Common
 
 ;; TODO: Add your public key and appguid to attribute below
 {assembly: SynergyDeviceLicense(PublicKey = "", AppGUID = "", Class = ^typeof(LicenseClass))}
-namespace $safeprojectname$
+namespace $safeprojectname$.DeviceLicensing
 
     class LicenseClass implements ISynergyDeviceCallback
 
