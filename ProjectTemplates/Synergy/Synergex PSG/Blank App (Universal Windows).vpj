@@ -149,26 +149,16 @@
     </Config>
     <Files>
         <Folder
-            Name="Source Files"
-            Filters="*.dbl;*.tpl;*.dbc">
-            <F N="Blank App (Universal Windows)/App.xaml.dbl"/>
-            <F N="Blank App (Universal Windows)/Properties/AssemblyInfo.dbl"/>
-            <F N="Blank App (Universal Windows)/MainPage.xaml.dbl"/>
-        </Folder>
-        <Folder
-            Name="Header Files"
-            Filters="*.def;*.dbh"/>
-        <Folder
-            Name="Toolkit Script Files"
-            Filters="*.wsc"/>
-        <Folder
             Name="Other Files"
             Filters="">
             <F N="Blank App (Universal Windows)/App.synproj"/>
             <F N="Blank App (Universal Windows)/App.xaml"/>
+            <F N="Blank App (Universal Windows)/App.xaml.dbl"/>
+            <F N="Blank App (Universal Windows)/Properties/AssemblyInfo.dbl"/>
             <F N="Blank App (Universal Windows)/Blank App (Universal Windows).vstemplate"/>
             <F N="Blank App (Universal Windows)/Properties/Default.rd.xml"/>
             <F N="Blank App (Universal Windows)/MainPage.xaml"/>
+            <F N="Blank App (Universal Windows)/MainPage.xaml.dbl"/>
             <F N="Blank App (Universal Windows)/Package.appxmanifest"/>
             <F N="Blank App (Universal Windows)/project.json"/>
         </Folder>

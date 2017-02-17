@@ -1,0 +1,14 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>NewController.dbl</DefaultName>
+    <Name>Web API Controller (CRUD)</Name>
+    <Description>An empty Web API controller class.</Description>
+    <ProjectType>Synergy</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem SubType="" TargetFileName="$fileinputname$.dbl" ReplaceParameters="true">Controller.dbl</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

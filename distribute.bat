@@ -6,6 +6,9 @@ pushd "%ROOT%"
 rem ------------------------------------------------------------------------------------
 set FOLDER=ItemTemplates\Synergy\Synergex PSG
 
+set NAME=Web API Controller (CRUD)
+call :ZIPIT
+
 set NAME=Web API Controller (Empty)
 call :ZIPIT
 

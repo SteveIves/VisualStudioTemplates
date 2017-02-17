@@ -1,0 +1,79 @@
+
+import System
+import System.Collections.Generic
+import System.Linq
+import System.Net
+import System.Net.Http
+import System.Web.Http
+
+namespace $rootnamespace$
+
+    ;{RoutePrefix("")}
+    ;;; <summary>
+    ;;; Describe what the controller does.
+    ;;; </summary>
+    public class $safeitemname$ extends ApiController
+
+        ;;; <summary>
+        ;;; Retrieves all <things>
+        ;;; </summary>
+        ;;; <returns>A collection of <things></returns>
+        public method Get, @IEnumerable<string>
+            endparams
+        proc
+            mreturn new string[#] {"value1", "value2"}
+        endmethod
+
+        ;;; <summary>
+        ;;; Returns a specific <thing>
+        ;;; </summary>
+        ;;; <param name="id">The ID of the <thing> to retrieve</param>
+        ;;; <returns>The requested <thing></returns>
+        public method Get, string
+            required in id, int
+            endparams
+        proc
+            mreturn "value"
+        endmethod
+
+        ;;; <summary>
+        ;;; Creates a new <thing>
+        ;;; </summary>
+        ;;; <param name="value">The data for the new <thing></param>
+        public method Post, void
+            {FromBody()}
+            required in value, string
+            endparams
+        proc
+
+        endmethod
+
+        ;;; <summary>
+        ;;; Updates an existing <thing>
+        ;;; </summary>
+        ;;; <param name="id">The ID of the <thing> to update</param>
+        ;;; <param name="value">The new data for the <thing></param>
+        public method Put, void
+            required in id, int
+            {FromBody()}
+            required in value, string
+            endparams
+        proc
+
+        endmethod
+
+        ;;; <summary>
+        ;;;  Deletes a <thing>
+        ;;; </summary>
+        ;;; <param name="id">The ID of the <thing> to delete</param>
+        public method Delete, void
+            required in id, int
+            endparams
+        proc
+
+        endmethod
+
+    endclass
+
+endnamespace
+

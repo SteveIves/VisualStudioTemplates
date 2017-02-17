@@ -149,40 +149,28 @@
     </Config>
     <Files>
         <Folder
-            Name="Source Files"
-            Filters="*.dbl;*.tpl;*.dbc">
-            <F N="Device Licensing App (Universal Windows)/App.xaml.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/Properties/AssemblyInfo.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseAbout.xaml.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseClass.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseLogin.xaml.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseUtility.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/MainPage.xaml.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/Common/NavigationHelper.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/Common/ObservableDictionary.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/Common/RelayCommand.dbl"/>
-            <F N="Device Licensing App (Universal Windows)/Common/SuspensionManager.dbl"/>
-        </Folder>
-        <Folder
-            Name="Header Files"
-            Filters="*.def;*.dbh"/>
-        <Folder
-            Name="Toolkit Script Files"
-            Filters="*.wsc"/>
-        <Folder
             Name="Other Files"
             Filters="">
             <F N="Device Licensing App (Universal Windows)/App.synproj"/>
             <F N="Device Licensing App (Universal Windows)/App.xaml"/>
+            <F N="Device Licensing App (Universal Windows)/Properties/AssemblyInfo.dbl"/>
             <F N="Device Licensing App (Universal Windows)/Properties/Default.rd.xml"/>
             <F N="Device Licensing App (Universal Windows)/Device Licensing App (Universal Windows).vstemplate"/>
             <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseAbout.xaml"/>
+            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseAbout.xaml.dbl"/>
+            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseClass.dbl"/>
             <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseLogin.xaml"/>
+            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseLogin.xaml.dbl"/>
+            <F N="Device Licensing App (Universal Windows)/DeviceLicensing/LicenseUtility.dbl"/>
             <F N="Device Licensing App (Universal Windows)/MainPage.xaml"/>
+            <F N="Device Licensing App (Universal Windows)/Common/NavigationHelper.dbl"/>
+            <F N="Device Licensing App (Universal Windows)/Common/ObservableDictionary.dbl"/>
             <F N="Device Licensing App (Universal Windows)/Package.appxmanifest"/>
             <F N="Device Licensing App (Universal Windows)/project.json"/>
             <F N="Device Licensing App (Universal Windows)/README.HTM"/>
+            <F N="Device Licensing App (Universal Windows)/Common/RelayCommand.dbl"/>
             <F N="Device Licensing App (Universal Windows)/Styles/Styles.xaml"/>
+            <F N="Device Licensing App (Universal Windows)/Common/SuspensionManager.dbl"/>
         </Folder>
     </Files>
     <Config

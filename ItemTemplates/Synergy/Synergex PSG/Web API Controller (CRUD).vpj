@@ -151,8 +151,8 @@
         <Folder
             Name="Other Files"
             Filters="">
-            <F N="Web API Controller (Empty)/Controller.dbl"/>
-            <F N="Web API Controller (Empty)/Web API Controller (Empty).vstemplate"/>
+            <F N="Web API Controller (CRUD)/Controller.dbl"/>
+            <F N="Web API Controller (CRUD)/Web API Controller (CRUD).vstemplate"/>
         </Folder>
     </Files>
     <Config

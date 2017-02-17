@@ -3,6 +3,7 @@
 	<Projects>
 		<Project File="ProjectTemplates/Synergy/Synergex PSG/Blank App (Universal Windows).vpj"/>
 		<Project File="ProjectTemplates/Synergy/Synergex PSG/Device Licensing App (Universal Windows).vpj"/>
+		<Project File="ItemTemplates/Synergy/Synergex PSG/Web API Controller (CRUD).vpj"/>
 		<Project File="ItemTemplates/Synergy/Synergex PSG/Web API Controller (Empty).vpj"/>
 	</Projects>
 </Workspace>
