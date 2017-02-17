@@ -1,0 +1,21 @@
+
+import System
+import System.Collections.Generic
+import System.ComponentModel
+import System.Linq
+import System.Net
+import System.Net.Http
+import System.Web.Http
+
+namespace $rootnamespace$
+
+	;{RoutePrefix("")}
+	;;; <summary>
+	;;; 
+	;;; </summary>
+	public class $safeitemname$ extends ApiController
+
+
+	endclass
+
+endnamespace
