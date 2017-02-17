@@ -1,4 +1,5 @@
 @echo off
+echo.
 setlocal
 set ROOT=%~dp0
 pushd "%ROOT%"
@@ -30,12 +31,30 @@ call :ZIPIT
 
 rem ------------------------------------------------------------------------------------
 
+echo.
+if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
+  echo Templates were copied to %USERPROFILE%\Documents\Visual Studio 2015\Templates
+) else (
+  echo Folder %USERPROFILE%\Documents\Visual Studio 2015\Templates does not exist.
+  echo Templates were created in the DISTRIBUTE folder but not added to Visual Studio.
+)
+echo.
+
 goto DONE
 
 :ZIPIT
+echo Processing "%FOLDER%\%NAME%"
 pushd "%FOLDER%\%NAME%"
-"C:\Program Files\7-Zip\7z.exe" a -r "%ROOT%DISTRIBUTE\%FOLDER%\%NAME%.zip" *.*
+"C:\Program Files\7-Zip\7z.exe" a -r "%ROOT%DISTRIBUTE\%FOLDER%\%NAME%.zip" *.* > nul
 popd
+
+if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
+  if not exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\." (
+    mkdir "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%"
+  )
+  copy /y "%ROOT%DISTRIBUTE\%FOLDER%\%NAME%.zip" "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\%NAME%.zip" > nul
+)
+
 exit /b
 
 :DONE
