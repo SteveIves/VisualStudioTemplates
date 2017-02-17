@@ -4,6 +4,13 @@ setlocal
 set ROOT=%~dp0
 pushd "%ROOT%"
 
+rem Make sure we have a ZIP folder
+if not exist ZIP\. (
+  echo Creating ZIP folder
+  echo.
+  mkdir ZIP
+)
+
 rem ------------------------------------------------------------------------------------
 set FOLDER=ItemTemplates\Synergy\Synergex PSG
 
@@ -39,23 +46,23 @@ if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
   echo Templates were copied to %USERPROFILE%\Documents\Visual Studio 2015\Templates
 ) else (
   echo Folder %USERPROFILE%\Documents\Visual Studio 2015\Templates does not exist.
-  echo Templates were created in the DISTRIBUTE folder but not added to Visual Studio.
+  echo Templates were created in the ZIP folder but not added to Visual Studio.
 )
 echo.
 
 goto DONE
 
 :ZIPIT
-echo Processing "%FOLDER%\%NAME%"
+echo Creating ZIP\%FOLDER%\%NAME%.zip
 pushd "%FOLDER%\%NAME%"
-"C:\Program Files\7-Zip\7z.exe" a -r "%ROOT%DISTRIBUTE\%FOLDER%\%NAME%.zip" *.* > nul
+"C:\Program Files\7-Zip\7z.exe" a -r "%ROOT%ZIP\%FOLDER%\%NAME%.zip" *.* > nul
 popd
 
 if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
   if not exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\." (
     mkdir "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%"
   )
-  copy /y "%ROOT%DISTRIBUTE\%FOLDER%\%NAME%.zip" "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\%NAME%.zip" > nul
+  copy /y "%ROOT%ZIP\%FOLDER%\%NAME%.zip" "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\%NAME%.zip" > nul
 )
 
 exit /b
