@@ -1,0 +1,158 @@
+
+import System
+import System.Collections.Generic
+import System.ComponentModel
+import System.Linq
+import System.Net
+import System.Net.Http
+import System.Web.Http
+import System.ComponentModel.DataAnnotations
+import $safeprojectname$.Models
+
+;;
+;; This example uses ModelValidation, but the validation is implemented in a custom Filter
+;; called ValidateModelAttribute. This filter is enabed in the hosting web application with
+;; custom code in the WebApiConfig class.
+;;
+
+namespace $safeprojectname$.Controllers
+
+    {RoutePrefix("api/people")}
+    ;;; <summary>
+    ;;; An example API Controller exposing CRUD functionality for sample Person data.
+    ;;; </summary>
+    public class PeopleController extends ApiController
+
+.region "Sample data"
+
+        ;; Dummy up some data
+        private static people, @List<Person>
+
+        private static method resetData, void
+        proc
+            people = new List<Person>() {
+            &   { new Person() {Id = 1, FirstName = "John", LastName = "Doe"} },
+            &   { new Person() {Id = 2, FirstName = "Jane", LastName = "Doe"} }
+            &   }
+        endmethod
+
+        ;;; <summary>
+        ;;; Constructs a new PeopleController.
+        ;;; </summary>
+        public method PeopleController
+        proc
+            if (people==^null)
+                resetData()
+        endmethod
+
+        {Route("reset")}
+        ;;; <summary>
+        ;;; Reset the data to a known state.
+        ;;; </summary>
+        public method GetReset, void
+        proc
+            resetData()
+        endmethod
+
+.endregion
+
+        {Route("")}
+        ;;; <summary>
+        ;;; Retrieves all people.
+        ;;; </summary>
+        ;;; <returns>A collection of Person objects.</returns>
+        public method Get, @IEnumerable<Person>
+        proc
+            mreturn people
+        endmethod
+
+        {Route("{id}")}
+        ;;; <summary>
+        ;;; Retrieves a specific person.
+        ;;; </summary>
+        ;;; <param name="id">ID of person to retrieve.</param>
+        ;;; <returns>Returns a Person object.</returns>
+        public method Get, @Person
+            required in id, int
+        proc
+            ;; Appropriate data was received - try to process it
+            data person = people.FirstOrDefault(lambda (p) { p.Id == id })
+            if (person == ^null)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Person not found!"))
+            mreturn person
+        endmethod
+
+        {Route("")}
+        ;;; <summary>
+        ;;; Creates a new person.
+        ;;; </summary>
+        ;;; <param name="person">Person to create.</param>
+        ;;; <returns>Returns an HttpResponseMessage indicating the status of the operation and, on success, containing a URL that can be used to retrieve the Person object.</returns>
+        public method Post, @HttpResponseMessage
+            {FromBody()}
+            required in person, @Person
+        proc
+            data response, @HttpResponseMessage
+            if (people.FirstOrDefault(lambda (p) { p.Id == person.Id }) == ^null) then
+            begin
+                people.Add(person)
+                response = Request.CreateResponse(HttpStatusCode.Created)
+                response.Headers.Location = new Uri(String.Format("{0}/{1}",Request.RequestUri,person.Id.ToString()))
+            end
+            else
+            begin
+                response = Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Person already exists!")
+            end
+            mreturn response
+        endmethod
+
+        {Route("")}
+        ;;; <summary>
+        ;;; Updates an existing person.
+        ;;; </summary>
+        ;;; <param name="person">Person to update.</param>
+        ;;; <returns>Returns an HttpResponseMessage indicating the status of the operation.</returns>
+        public method Put, @HttpResponseMessage
+            {FromBody()}
+            required in person, @Person
+        proc
+            data response, @HttpResponseMessage
+            data existingPerson = people.FirstOrDefault(lambda (p) { p.Id == person.Id })
+            if (existingPerson != ^null) then
+            begin
+                people[people.IndexOf(existingPerson)] = person
+                response = Request.CreateResponse(HttpStatusCode.OK)
+            end
+            else
+            begin
+                response = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Person not found!")
+            end
+            mreturn response
+        endmethod
+
+        {Route("{id}")}
+        ;;; <summary>
+        ;;; Deletes a person.
+        ;;; </summary>
+        ;;; <param name="id">ID of the person to be deleted.</param>
+        ;;; <returns>Returns an HttpResponseMessage indicating the status of the operation.</returns>
+        public method Delete, @HttpResponseMessage
+            required in id, int
+        proc
+            data response, @HttpResponseMessage
+            data person = people.FirstOrDefault(lambda (p) { p.Id == id })
+            if (person != ^null) then
+            begin
+                people.Remove(person)
+                response = Request.CreateResponse(HttpStatusCode.OK)
+            end
+            else
+            begin
+                response = Request.CreateErrorResponse(HttpStatusCode.NotFound, "Person not found!")
+            end
+            mreturn response
+        endmethod
+
+    endclass
+
+endnamespace

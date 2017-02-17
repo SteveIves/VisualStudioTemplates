@@ -1,0 +1,39 @@
+
+import System.Collections.Generic
+import System.Linq
+import System.Net
+import System.Net.Http
+import System.Web.Http.Controllers
+import System.Web.Http.Filters
+import System.Web.Http.ModelBinding
+
+namespace $safeprojectname$.Filters
+
+    ;;
+    ;; This filter can be used to implement ModelState validation, which validates inbound data against the rules expressed in
+    ;; model classes via the use of the various attributes in the System.ComponentModel.DataAnnotations namespace.
+    ;;
+    ;; To activate this filter within the hosting environment you mustn declare it in your HttpConfiguration. If hosting in
+    ;; an ASP.NET web application this is generally done in the WebApiConfig.Register method, like this:
+    ;;
+    ;;     config.Filters.Add(new ValidateModelAttribute());
+    ;;
+
+    ;;; <summary>
+    ;;; This filter runs requests through ModelState validation and, if validation fails, returns an error response without even calling the operation.
+    ;;; </summary>
+    public class ValidateModelAttribute extends ActionFilterAttribute
+
+        public override method OnActionExecuting, void
+            required in actionContext, @HttpActionContext
+        proc
+            if (actionContext.ModelState.IsValid == false)
+            begin
+                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, actionContext.ModelState)
+            end
+        endmethod
+
+    endclass
+
+endnamespace
+

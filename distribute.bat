@@ -16,6 +16,9 @@ call :ZIPIT
 rem ------------------------------------------------------------------------------------
 set FOLDER=ProjectTemplates\Synergy\Synergex PSG
 
+set NAME=ASP.NET Web API Service Library
+call :ZIPIT
+
 set NAME=Blank App (Universal Windows)
 call :ZIPIT
 

@@ -1,0 +1,49 @@
+
+import System
+import System.ComponentModel.DataAnnotations
+
+namespace $safeprojectname$.Models
+
+    ;;; <summary>
+    ;;; Represents information about a person.
+    ;;; </summary>
+    public class Person
+
+        ;;; <summary>
+        ;;; Person ID.
+        ;;; </summary>
+        {Required(ErrorMessage = "Id is required!")}
+        public property Id, int
+            method get
+            endmethod
+            method set
+            endmethod
+        endproperty
+
+        ;;; <summary>
+        ;;; First name.
+        ;;; </summary>
+        {Required(ErrorMessage = "First name is required!")}
+        {StringLength(15, ErrorMessage = "First name may not be longer than 15 characters!")}
+        public property FirstName, string
+            method get
+            endmethod
+            method set
+            endmethod
+        endproperty
+
+        ;;; <summary>
+        ;;; Last name.
+        ;;; </summary>
+        {Required(ErrorMessage = "Last name is required!")}
+        {StringLength(15, ErrorMessage = "Last name may not be longer than 15 characters!")}
+        public property LastName, string
+            method get
+            endmethod
+            method set
+            endmethod
+        endproperty
+
+    endclass
+
+endnamespace
