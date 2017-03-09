@@ -1,0 +1,54 @@
+
+import System
+import System.Collections.Generic
+import System.Net
+import System.Net.Http
+import System.Web.Http
+
+namespace $safeprojectname$
+
+	;;;  <summary>
+	;;;  Exposes information about values.
+	;;;  </summary>
+	public class ValuesController extends ApiController
+
+		;; GET api/values
+		public method Get, @IEnumerable<string>
+		proc
+			mreturn new string[#] {"value1", "value2"}
+		endmethod
+
+		;; GET api/values/5
+		public method Get, string
+			id, int 
+		proc
+			mreturn "value"
+		endmethod
+
+		;; POST api/values
+		public method Post, void
+			{FromBody()}
+			value, string 
+		proc
+
+		endmethod
+
+		;; PUT api/values/5
+		public method Put, void
+			id, int 
+			{FromBody()}
+			value, string 
+		proc
+
+		endmethod
+
+		;; DELETE api/values/5
+		public method Delete, void
+			id, int 
+		proc
+
+		endmethod
+
+	endclass
+
+endnamespace

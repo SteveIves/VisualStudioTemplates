@@ -23,6 +23,9 @@ call :ZIPIT
 rem ------------------------------------------------------------------------------------
 set FOLDER=ProjectTemplates\Synergy\Synergex PSG
 
+set NAME=ASP.NET Web API Self Hosting App
+call :ZIPIT
+
 set NAME=ASP.NET Web API Service Library
 call :ZIPIT
 
@@ -63,6 +66,13 @@ if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
     mkdir "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%"
   )
   copy /y "%ROOT%ZIP\%FOLDER%\%NAME%.zip" "%USERPROFILE%\Documents\Visual Studio 2015\Templates\%FOLDER%\%NAME%.zip" > nul
+)
+
+if exist "%USERPROFILE%\Documents\Visual Studio 2017\Templates\." (
+  if not exist "%USERPROFILE%\Documents\Visual Studio 2017\Templates\%FOLDER%\." (
+    mkdir "%USERPROFILE%\Documents\Visual Studio 2017\Templates\%FOLDER%"
+  )
+  copy /y "%ROOT%ZIP\%FOLDER%\%NAME%.zip" "%USERPROFILE%\Documents\Visual Studio 2017\Templates\%FOLDER%\%NAME%.zip" > nul
 )
 
 exit /b
