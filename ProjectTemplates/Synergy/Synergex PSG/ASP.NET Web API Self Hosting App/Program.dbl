@@ -10,19 +10,11 @@ namespace $safeprojectname$
 	main
 
 	proc
-		data baseAddress, string, "http://localhost:8080/WebServer/"
+		data baseAddress = "http://localhost:8080/"
 		disposable data app = WebApp.Start<Startup>(baseAddress)
 
 		Console.WriteLine("")
-		Console.WriteLine("Server is listening at {0}",baseAddress)
-		Console.WriteLine("")
-		Console.WriteLine("The following sample actions are available:")
-		Console.WriteLine("")
-		Console.WriteLine("GET    " + baseAddress + "api/values")
-		Console.WriteLine("GET    " + baseAddress + "api/values/1")
-		Console.WriteLine("POST   " + baseAddress + "api/values")
-		Console.WriteLine("PUT    " + baseAddress + "api/values/1")
-		Console.WriteLine("DELETE " + baseAddress + "api/values/1")
+		Console.WriteLine("The server is listening at a base address of {0}",baseAddress)
 		Console.WriteLine("")
 		Console.Write("Press a key to stop the server: ")
 		Console.ReadKey()

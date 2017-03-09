@@ -19,8 +19,7 @@ namespace $safeprojectname$
 			config.MapHttpAttributeRoutes()
 
 			;;Configure a default route
-			data opts = new RouteOptions() { Id = RouteParameter.Optional}
-			config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", opts)
+			config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new RouteOptions() { Id = RouteParameter.Optional})
 
 			appBuilder.UseWebApi(config)
 
