@@ -49,7 +49,11 @@ if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
   echo Templates were copied to %USERPROFILE%\Documents\Visual Studio 2015\Templates
 ) else (
   echo Folder %USERPROFILE%\Documents\Visual Studio 2015\Templates does not exist.
-  echo Templates were created in the ZIP folder but not added to Visual Studio.
+)
+if exist "%USERPROFILE%\Documents\Visual Studio 2017\Templates\." (
+  echo Templates were copied to %USERPROFILE%\Documents\Visual Studio 2017\Templates
+) else (
+  echo Folder %USERPROFILE%\Documents\Visual Studio 2017\Templates does not exist.
 )
 echo.
 
