@@ -1,20 +1,20 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
     <Name>BOT Host</Name>
-    <Description>An ASP.NET web application for hosting BOT Framework services.</Description>
+    <Description>An ASP.NET web application for hosting Microsoft Bot Framework services.</Description>
     <ProjectType>CSharp</ProjectType>
     <ProjectSubType>
     </ProjectSubType>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>BotServiceHost</DefaultName>
+    <DefaultName>BotHost</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="BotHost.csproj" File="BotHost.csproj" ReplaceParameters="true">
+    <Project TargetFileName="Host.csproj" File="Host.csproj" ReplaceParameters="true">
       <Folder Name="App_Start" TargetFolderName="App_Start">
         <ProjectItem ReplaceParameters="true" TargetFileName="WebApiConfig.cs">WebApiConfig.cs</ProjectItem>
       </Folder>

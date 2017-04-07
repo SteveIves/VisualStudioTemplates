@@ -1,25 +1,25 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
     <Name>BOT Library</Name>
-    <Description>A Synergy .NET class library for use with the Microsoft BOT Framework</Description>
+    <Description>A Synergy .NET class library for creating a Bot with the Microsoft Bot Framework.</Description>
     <ProjectType>Synergy</ProjectType>
     <ProjectSubType>
     </ProjectSubType>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>BotLibrary</DefaultName>
+    <DefaultName>Bot</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
   </TemplateData>
   <TemplateContent>
-    <Project TargetFileName="BotLibrary.synproj" File="BotLibrary.synproj" ReplaceParameters="true">
+    <Project TargetFileName="Bot.synproj" File="Bot.synproj" ReplaceParameters="true">
       <Folder Name="Controllers" TargetFolderName="Controllers">
         <ProjectItem ReplaceParameters="true" TargetFileName="MessagesController.dbl">MessagesController.dbl</ProjectItem>
       </Folder>
       <Folder Name="Dialogs" TargetFolderName="Dialogs">
-        <ProjectItem ReplaceParameters="true" TargetFileName="Dialog1.dbl">Dialog1.dbl</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="MessagesDialog.dbl">MessagesDialog.dbl</ProjectItem>
       </Folder>
       <Folder Name="Properties" TargetFolderName="Properties">
         <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.dbl">AssemblyInfo.dbl</ProjectItem>

@@ -27,7 +27,7 @@ namespace $safeprojectname$.Controllers
 
 		proc
 			if (message.Type == ActivityTypes.Message) then
-				await Conversation.SendAsync(message, lambda () { new Dialog1() })
+				await Conversation.SendAsync(message, lambda () { new MessagesDialog() })
 			else
 				HandleSystemMessage(message)
 

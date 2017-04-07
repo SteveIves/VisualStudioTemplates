@@ -11,29 +11,25 @@ import Microsoft.Bot.Connector
 namespace $safeprojectname$.Dialogs
 
 	{Serializable}
-	public class Dialog1 implements IDialog<object>
+	public class MessagesDialog implements IDialog<object>
 	
 		public async method StartAsync,	@Task
-			context		,@IDialogContext
+			context, @IDialogContext
 		proc
 			context.Wait(MessageReceivedAsync)
 		endmethod
 
 		public async method MessageReceivedAsync, @Task
-			context		,@IDialogContext
-			argument	,@IAwaitable<IMessageActivity>
+			context, @IDialogContext
+			argument, @IAwaitable<IMessageActivity>
 		proc
 			data message, @IMessageActivity, await argument
-
-			;; Calculate something TooManyAttemptsException send back
-			data length, int, 0
-			if (message.Text != ^null) length = message.Text.Length
+			data msgtext = (message.Text == ^null) ? "" : message.Text
+			data length = msgtext.Length
 
 			;; Send reply
-			await context.PostAsync("You sent " + message.Text + " which was " + length + " characters")
-
+			await context.PostAsync(String.Format("You sent {0} which has a length of {1} characters.",msgtext,length))
 			context.Wait(MessageReceivedAsync)
-
 		endmethod
 
 	endclass
