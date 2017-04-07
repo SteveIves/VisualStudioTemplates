@@ -1,0 +1,41 @@
+
+import System
+import System.Collections
+import System.Collections.Generic
+import System.Text
+import System.Text.RegularExpressions
+import System.Threading.Tasks
+import Microsoft.Bot.Builder.Dialogs
+import Microsoft.Bot.Connector
+
+namespace $safeprojectname$.Dialogs
+
+	{Serializable}
+	public class Dialog1 implements IDialog<object>
+	
+		public async method StartAsync,	@Task
+			context		,@IDialogContext
+		proc
+			context.Wait(MessageReceivedAsync)
+		endmethod
+
+		public async method MessageReceivedAsync, @Task
+			context		,@IDialogContext
+			argument	,@IAwaitable<IMessageActivity>
+		proc
+			data message, @IMessageActivity, await argument
+
+			;; Calculate something TooManyAttemptsException send back
+			data length, int, 0
+			if (message.Text != ^null) length = message.Text.Length
+
+			;; Send reply
+			await context.PostAsync("You sent " + message.Text + " which was " + length + " characters")
+
+			context.Wait(MessageReceivedAsync)
+
+		endmethod
+
+	endclass
+
+endnamespace

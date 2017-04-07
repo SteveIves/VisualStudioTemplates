@@ -32,6 +32,9 @@ call :ZIPIT
 set NAME=Blank App (Universal Windows)
 call :ZIPIT
 
+set name=BOT
+call :ZIPIT
+
 set NAME=Device Licensing App (Universal Windows)
 call :ZIPIT
 
