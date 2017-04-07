@@ -1,10 +1,21 @@
 @echo off
 echo.
+
 setlocal
+
 set ROOT=%~dp0
 pushd "%ROOT%"
 
+rem ------------------------------------------------------------------------------------
+rem Check that we have 7-Zip installed
+
+set ZIPEXE=%ProgramFiles%\7-Zip\7z.exe
+if not exist "%ZIPEXE%" set ZIPEXE=%ProgramFiles(x86)%\7-Zip\7z.exe
+if not exist "%ZIPEXE%" (echo Please install 7-zip from http://7-zip.org/download.html & exit/b)
+
+rem ------------------------------------------------------------------------------------
 rem Make sure we have a ZIP folder
+
 if not exist ZIP\. (
   echo Creating ZIP folder
   echo.
@@ -12,6 +23,8 @@ if not exist ZIP\. (
 )
 
 rem ------------------------------------------------------------------------------------
+rem Process Synergy item templates
+
 set FOLDER=ItemTemplates\Synergy\Synergex PSG
 
 set NAME=Web API Controller (CRUD)
@@ -21,6 +34,8 @@ set NAME=Web API Controller (Empty)
 call :ZIPIT
 
 rem ------------------------------------------------------------------------------------
+rem Process Synergy project templates
+
 set FOLDER=ProjectTemplates\Synergy\Synergex PSG
 
 set NAME=ASP.NET Web API Self Hosting App
@@ -42,6 +57,7 @@ set NAME=Device Licensing App (Universal Windows)
 call :ZIPIT
 
 rem ------------------------------------------------------------------------------------
+rem Process C# project templates
 
 set FOLDER=ProjectTemplates\Visual C#\Synergex PSG
 
@@ -63,12 +79,26 @@ if exist "%USERPROFILE%\Documents\Visual Studio 2017\Templates\." (
 )
 echo.
 
-goto DONE
+rem ------------------------------------------------------------------------------------
+rem All done, clean up
+
+popd
+endlocal
+pause
+
+exit/b
+
+rem ------------------------------------------------------------------------------------
+rem ZIPIT subroutine
 
 :ZIPIT
+
 echo Creating ZIP\%FOLDER%\%NAME%.zip
+
 pushd "%FOLDER%\%NAME%"
-"C:\Program Files\7-Zip\7z.exe" a -r "%ROOT%ZIP\%FOLDER%\%NAME%.zip" *.* > nul
+
+"%ZIPEXE%" a -r "%ROOT%ZIP\%FOLDER%\%NAME%.zip" *.* > nul
+
 popd
 
 if exist "%USERPROFILE%\Documents\Visual Studio 2015\Templates\." (
@@ -87,7 +117,4 @@ if exist "%USERPROFILE%\Documents\Visual Studio 2017\Templates\." (
 
 exit /b
 
-:DONE
-popd
-endlocal
-pause
+rem ------------------------------------------------------------------------------------
