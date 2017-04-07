@@ -1,4 +1,4 @@
-<VSTemplate Version="3.0.0" Type="ProjectGroup" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="ProjectGroup">
   <TemplateData>
     <Name>BOT</Name>
     <Description>An environment for defining Synergy .NET BOT Framework BOTs and hosting them in an ASP.NET WebApi Service.</Description>
@@ -7,7 +7,7 @@
     </ProjectSubType>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
-    <DefaultName>BotLibrary</DefaultName>
+    <DefaultName>Bot</DefaultName>
     <ProvideDefaultName>true</ProvideDefaultName>
     <LocationField>Enabled</LocationField>
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
@@ -15,10 +15,10 @@
   </TemplateData>
   <TemplateContent>  
     <ProjectCollection>  
-        <ProjectTemplateLink ProjectName="BOT Host">  
+        <ProjectTemplateLink ProjectName="$safeprojectname$.Host" CopyParameters="true">  
             Host\Host.vstemplate  
         </ProjectTemplateLink>  
-        <ProjectTemplateLink ProjectName="BOT Library">  
+        <ProjectTemplateLink ProjectName="$safeprojectname$.Bot" CopyParameters="true">  
             Library\Library.vstemplate
         </ProjectTemplateLink>  
     </ProjectCollection>  
