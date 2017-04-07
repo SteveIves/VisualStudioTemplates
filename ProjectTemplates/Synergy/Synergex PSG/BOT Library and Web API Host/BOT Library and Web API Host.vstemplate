@@ -1,6 +1,6 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="ProjectGroup">
   <TemplateData>
-    <Name>BOT</Name>
+    <Name>BOT Library and Web API Host</Name>
     <Description>Creates an environment building a Bot using Synergy .NET and the Microsoft Bot Framework.</Description>
     <ProjectType>Synergy</ProjectType>
     <ProjectSubType>

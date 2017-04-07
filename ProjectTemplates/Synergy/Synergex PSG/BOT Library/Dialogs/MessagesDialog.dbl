@@ -1,0 +1,37 @@
+
+import System
+import System.Collections
+import System.Collections.Generic
+import System.Text
+import System.Text.RegularExpressions
+import System.Threading.Tasks
+import Microsoft.Bot.Builder.Dialogs
+import Microsoft.Bot.Connector
+
+namespace $safeprojectname$.Dialogs
+
+	{Serializable}
+	public class MessagesDialog implements IDialog<object>
+	
+		public async method StartAsync,	@Task
+			context, @IDialogContext
+		proc
+			context.Wait(MessageReceivedAsync)
+		endmethod
+
+		public async method MessageReceivedAsync, @Task
+			context, @IDialogContext
+			argument, @IAwaitable<IMessageActivity>
+		proc
+			data message, @IMessageActivity, await argument
+			data msgtext = (message.Text == ^null) ? "" : message.Text
+			data length = msgtext.Length
+
+			;; Send reply
+			await context.PostAsync(String.Format("You sent {0} which has a length of {1} characters.",msgtext,length))
+			context.Wait(MessageReceivedAsync)
+		endmethod
+
+	endclass
+
+endnamespace
