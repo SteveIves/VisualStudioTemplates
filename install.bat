@@ -32,7 +32,7 @@ call :ZIPIT
 set NAME=Blank App (Universal Windows)
 call :ZIPIT
 
-set name=BOT
+set name=BOT Library and Web API Host
 call :ZIPIT
 
 set NAME=Device Licensing App (Universal Windows)
